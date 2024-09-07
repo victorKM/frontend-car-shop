@@ -1,15 +1,18 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { Card } from "./componentes/card/card";
 import { useCarData } from "./hooks/useCarData";
 import { useCategoryData } from "./hooks/useCategoryData";
-import { CreateModal } from "./componentes/create-modal/create-modal";
+import { CreateModalCar } from "./componentes/create-modal/create-modal-car";
+import { CreateModalCategory } from "./componentes/create-modal/create-modal-category";
 import makeAnimated from "react-select/animated"
 import Select from 'react-select'
+import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
   const { categories } = useCategoryData();
-  const [isModalOpen, setIsModalOpen]= useState(false);
+  const [isCarModalOpen, setIsCarModalOpen]= useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen]= useState(false);
 
   const [selectedCategoriesOptions, setselectedCategoriesOptions] = useState([]);
   const [categoriesNames, setCategoriesNames] = useState("");
@@ -23,21 +26,25 @@ function App() {
   
   const animatedComponents = makeAnimated();
 
-  const handleOpenModal = () => {
-    setIsModalOpen(prev => !prev)
+  const handleOpenCarModal = () => {
+    setIsCarModalOpen(prev => !prev)
   }
 
-  const handleSearch = (value) => {
+  const handleOpenCategoryModal = () => {
+    setIsCategoryModalOpen(prev => !prev)
+  }
+
+  const handleSearch = (value: string) => {
     setSearch(value); 
   };
 
-  const handleSelectCategoryChange = (item) => {
+  const handleSelectCategoryChange = (item: any) => {
     setselectedCategoriesOptions(item);
-    const selectedValuesString = item.map(option => option.label).join(',');
+    const selectedValuesString = item.map((option: { label: any }) => option.label).join(',');
     setCategoriesNames(selectedValuesString);
   };
 
-  const handleSelectSortChange = (item) => {
+  const handleSelectSortChange = (item: any) => {
     setSelectedSortOptions(item);
     const selectedValueString = item.value;
     setSort(selectedValueString);
@@ -113,24 +120,37 @@ function App() {
           />
           <button className="search-button" onClick={handleClear}>Limpar</button>
         </div>
+        <h1 className="container-title">Carros Disponíveis</h1>
         <div className="container">
-          <h1>Carros Disponíveis</h1>
           <div className="card-grid">
-          {cars?.map(carData => {
-            const categoriesString = carData.categories.map(category => category.name).join(', ');
-            return (
-              <Card 
-                price={carData.price}
-                name={carData.name}
-                company={carData.company}
-                image={carData.imageUrl}
-                categories={categoriesString}
-              />
-            );
-          })}
+            <AnimatePresence>
+              {cars?.map(carData => {
+                const categoriesString = carData.categories.map(category => category.name).join(', ');
+                return (
+                  <motion.div
+                    key={carData.id}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <Card 
+                      price={carData.price}
+                      name={carData.name}
+                      company={carData.company}
+                      image={carData.imageUrl}
+                      categories={categoriesString}
+                    />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
-          {isModalOpen && <CreateModal closeModal={handleOpenModal}/>}
-          <button onClick={handleOpenModal}>Novo</button>
+          {isCarModalOpen && <CreateModalCar closeModal={handleOpenCarModal}/>}
+          <button className="right-button"onClick={handleOpenCarModal}>Novo carro</button>
+
+          {isCategoryModalOpen && <CreateModalCategory closeModal={handleOpenCategoryModal}/>}
+          <button className="left-button"onClick={handleOpenCategoryModal}>Nova categoria</button>
         </div>
       </>
   );

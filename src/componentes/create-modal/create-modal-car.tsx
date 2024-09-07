@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCarDataMutate } from "../../hooks/useCarDataMutate";
-import { CarData } from "../../interface/CarData";
+import { CarDataPost } from "../../interface/CarDataPost";
 import makeAnimated from "react-select/animated"
 import Select from 'react-select'
 
@@ -21,16 +21,16 @@ const Input = ({label, value, updateValue}: InputProps) => {
   return (
     <>
       <label>{label}</label>
-      <input value = {value} onChange={event => updateValue(event.target.value)}></input>
+      <input required value = {value} onChange={event => updateValue(event.target.value)}></input>
     </>
   )
 }
 
-export function CreateModal({ closeModal }: ModalProps) {
+export function CreateModalCar({ closeModal }: ModalProps) {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
-  const [price, setPrice] = useState(0);
   const [imageUrl, setImageUrl] = useState("");
+  const [price, setPrice] = useState(0);
   const { mutate, isSuccess} = useCarDataMutate();
   const [selectedCategoriesOptions, setSelectedCategoriesOptions] = useState([]);
   const [categoriesIds, setCategoriesIds] = useState([]);
@@ -40,19 +40,18 @@ export function CreateModal({ closeModal }: ModalProps) {
   const animatedComponents = makeAnimated();
 
   const submit = () => {
-    const carData: CarData = {
+    const carData: CarDataPost = {
       name,
       company,
       price,
       imageUrl,
       categoriesIds,
     }
-    console.log(carData);
     mutate(carData);
   }
 
-  const handleSelectCategoryChange = (item) => {
-    const selectedIdCategories = item ? item.map((option) => option.value) : [];
+  const handleSelectCategoryChange = (item: any) => {
+    const selectedIdCategories = item ? item.map((option: { value: any }) => option.value) : [];
     setCategoriesIds(selectedIdCategories);
     setSelectedCategoriesOptions(item);
     console.log(categoriesIds);

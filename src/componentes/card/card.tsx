@@ -23,5 +23,5 @@ export function Card({price, image, name, company, categories}: CardProps) {
       <p><b>Valor: </b>{formattedPrice}</p>
       <p><b>Categorias: </b>{categories}</p> 
     </div>
-  );
+  );  
 }

@@ -3,16 +3,17 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  min-height: 70vh;
+  min-height: 60vh;
+  margin-bottom: 60px;
 }
 
 .card-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 16px;
 }
 
-.header-grid {
+.header-grid {    
   display: grid;
   grid-template-columns: 50% 25% 15% 10%;
   gap: 16px;
@@ -20,13 +21,12 @@
   margin-left: 50px;
   margin-right: 50px;
 }
+
 .container button {
-  background-color: #0275d8;
   color: white;
   font-weight: bold;
   position: fixed;
   bottom: 16px;
-  right: 24px;
   transition: all 0.1s linear 0.1s;
   border-radius: 8px;
   border: 1px solid transparent;
@@ -34,12 +34,29 @@
   font-size: 1em;
   font-family: inherit;
   cursor: pointer;
+  background-color: #0275d8;
 }
 
 .container button:hover {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 7px 0px;
   transform: scale(1.1);
   border-color: #646cff;
+}
+
+.container .right-button {
+  right: 24px;
+}
+
+.container .left-button {
+  left: 24px; 
+}
+
+.container-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+  margin-bottom: 0px;
 }
 
 .search-bar {
