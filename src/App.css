@@ -10,7 +10,8 @@
 .card-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 16px;
+  gap: 30px;
+  justify-content: center; 
 }
 
 .header-grid {    
